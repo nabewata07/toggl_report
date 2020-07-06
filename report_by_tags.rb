@@ -110,10 +110,21 @@ class TogglManager
     date_keys.each do |date_str|
       csv_str += date_str + "\n"
       tags = @@man_hours[date_str].keys.sort
-      csv_str += tags.join(',') + "\n"
+      csv_str += tags.join(',') + ",total_hours\n"
+      total_minutes = 0
       tags.each do |tag|
-        tmp_ary.push(@@man_hours[date_str][tag].round(2))
+        # puts 'hgoehgoehgoeheo'
+        # p @@man_hours[date_str][tag]
+        minutes = @@man_hours[date_str][tag].ceil
+        hours = minutes / 60
+        rest = minutes % 60
+        hours_minutes = "#{hours}:#{rest}"
+        total_minutes += minutes
+        tmp_ary.push(hours_minutes)
       end
+      total_hours = total_minutes / 60
+      total_rest = total_minutes % 60
+      tmp_ary.push("#{total_hours}:#{total_rest}")
       # tmp_ary.push(@@man_hours[k].round(2))
       csv_str += tmp_ary.join(',') + "\n"
       tmp_ary = []
